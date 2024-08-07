@@ -79,7 +79,7 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region eu-central-1
           aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 767397934092.dkr.ecr.eu-central-1.amazonaws.com
-          echo "ECR_REGISTRY/cicd-repo:tizi"
-          docker pull $ECR_REGISTRY/cicd-repo:latest
-          docker run -d -p 80:8000 $ECR_REGISTRY/cicd-repo:
+          echo "$ECR_REGISTRY/cicd-repo:tizi"
+          docker pull $ECR_REGISTRY/cicd-repo:tizi
+          docker run -d -p 80:8000 $ECR_REGISTRY/cicd-repo:tizi
           EOF
