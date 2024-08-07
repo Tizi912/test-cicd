@@ -44,6 +44,6 @@ jobs:
       - name: Deploy Docker Container
         run: |
           INSTANCE_IP=$(terraform output -raw instance_public_ip)
-          docker save my-app | ssh -i terraform/test.pem.pem ec2-user@$INSTANCE_IP 'docker load && docker run -d -p 80:80 my-app'
+          docker save my-app | ssh -i terraform/test.pem ec2-user@$INSTANCE_IP 'docker load && docker run -d -p 80:80 my-app'
         env:
           DOCKER_BUILDKIT: 1
