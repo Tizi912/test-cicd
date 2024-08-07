@@ -63,7 +63,7 @@ jobs:
           ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
           IMAGE_TAG: ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
         run: |
-          docker build -t $ECR_REGISTRY/cicd-repo:$IMAGE_TAG -f fastapiapp/Dockerfile
+          docker build -t $ECR_REGISTRY/cicd-repo:$IMAGE_TAG -f fastapiapp/Dockerfile .
           docker push $ECR_REGISTRY/cicd-repo:$IMAGE_TAG
 
       - name: Deploy to EC2
