@@ -39,7 +39,7 @@ jobs:
           AWS_REGION: eu-central-1
 
       - name: Build Docker Image
-        run: docker build -t my-app ./fastapiapp/Dockerfile
+        run: docker build -t my-app -f fastapiapp/Dockerfile fastapiapp
 
       - name: Deploy Docker Container
         run: |
