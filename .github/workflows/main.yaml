@@ -43,8 +43,6 @@ jobs:
 
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
-        with:
-          AWS_REGION: eu-central-1
 
       - name: Tag Docker Image
         run: docker tag my-app:latest cicd-repo/my-app:latest
