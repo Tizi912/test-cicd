@@ -83,4 +83,5 @@ jobs:
           EOF
 
 
+
           767397934092.dkr.ecr.eu-central-1.amazonaws.com/cicd-repo:22eccf0-2024-08-07-15-44
