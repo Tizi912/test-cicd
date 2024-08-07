@@ -70,9 +70,10 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          INSTANCE_IP=$(terraform output -raw instance_public_ip)
+          INSTANCE_ID=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=MyEC2Instance" --query 'Reservations[*].Instances[*].InstanceId' --output text)
+          INSTANCE_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
           chmod 400 ./terraform/test.pem
-          ssh -o StrictHostKeyChecking=no -i ./terraform/test.pem ec2-user@INSTANCE_IP << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ./terraform/test.pem ec2-user@$INSTANCE_IP << 'EOF'
           docker pull cicd-repo/my-app:latest
           docker run -d -p 80:8000 cicd-repo/my-app:latest
           EOF
