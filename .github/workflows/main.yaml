@@ -38,9 +38,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: eu-central-1
 
-      - name: Build Docker Image
-        run: docker build -t my-app -f fastapiapp/Dockerfile fastapiapp
-
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -49,13 +46,28 @@ jobs:
           aws-region: eu-central-1
 
       - name: Log in to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v2
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Tag Docker Image
         run: docker tag my-app:latest cicd-repo/my-app:latest
 
-      - name: Push Docker Image to ECR
-        run: docker push cicd-repo/my-app:latest
+      - name: Get commit hash
+        id: get-commit-hash
+        run: echo "::set-output name=commit-hash::$(git rev-parse --short HEAD)"
+      - name: Get timestamp
+        id: get-timestamp
+        run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M')"
+
+      - name: Build, tag, and push the image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
+          IMAGE_TAG: ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
+        run: |
+          docker build -t $ECR_REGISTRY/cicd-repo:$IMAGE_TAG -f fastapiapp/Dockerfile
+          docker push $ECR_REGISTRY/cicd-repo:$IMAGE_TAG
 
       - name: Deploy to EC2
         env:
