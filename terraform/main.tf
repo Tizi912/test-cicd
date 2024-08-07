@@ -84,7 +84,7 @@ resource "aws_instance" "my_instance" {
     Name = "MyEC2Instance"
   }
 
-  user_data = file(userdata.sh)
+  user_data = file("userdata.sh")
 }
 
 #docker pull my-dockerhub-username/my-ml-model:latest
