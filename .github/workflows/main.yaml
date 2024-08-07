@@ -74,7 +74,9 @@ jobs:
           INSTANCE_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
           chmod 400 ./terraform/test.pem
           ssh -o StrictHostKeyChecking=no -i ./terraform/test.pem ec2-user@$INSTANCE_IP << 'EOF'
-
+          aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
+          aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          aws configure set default.region "eu-central-1"
           aws ecr get-login-password --region eu-central | docker login --username AWS --password-stdin 767397934092.dkr.ecr.eu-central-1.amazonaws.com
           docker pull 767397934092.dkr.ecr.eu-central-1.amazonaws.com/cicd-repo:latest
           docker run -d -p 80:8000 cicd-repo/my-app:latest
