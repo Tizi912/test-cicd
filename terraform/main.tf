@@ -87,6 +87,14 @@ resource "aws_instance" "my_instance" {
   user_data = file("userdata.sh")
 }
 
+resource "aws_ecr_repository" "my_repository" {
+  name                 = "cicd-repo" # Replace with your desired repository name
+  image_tag_mutability = "MUTABLE"   # Options: MUTABLE or IMMUTABLE
+  lifecycle {
+    prevent_destroy = true # Optional: Prevents accidental deletion
+  }
+}
+
 #docker pull my-dockerhub-username/my-ml-model:latest
 #docker run -d -p 80:80 my-dockerhub-username/my-ml-model:latest
 
