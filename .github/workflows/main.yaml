@@ -65,7 +65,7 @@ jobs:
         run: |
           echo "$ECR_REGISTRY/cicd-repo:$IMAGE_TAG"
           docker build -t $ECR_REGISTRY/cicd-repo:tizi -f fastapiapp/Dockerfile fastapiapp
-          docker push $ECR_REGISTRY/cicd-repo:$IMAGE_TAG
+          docker push $ECR_REGISTRY/cicd-repo:tizi
 
       - name: Deploy to EC2
         env:
