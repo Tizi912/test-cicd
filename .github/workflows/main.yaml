@@ -49,9 +49,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Tag Docker Image
-        run: docker tag my-app:latest cicd-repo/my-app:latest
-
       - name: Get commit hash
         id: get-commit-hash
         run: echo "::set-output name=commit-hash::$(git rev-parse --short HEAD)"
