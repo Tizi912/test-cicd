@@ -80,10 +80,5 @@ jobs:
           aws configure set default.region eu-central-1
           aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 767397934092.dkr.ecr.eu-central-1.amazonaws.com
           echo "$ECR_REGISTRY/cicd-repo:$IMAGE_TAG"
-          docker pull $ECR_REGISTRY/cicd-repo:$IMAGE_TAG
-          docker run -d -p 80:8000 cicd-repo/my-app:latest
+          docker run -d -p 80:8000 $ECR_REGISTRY/cicd-repo:$IMAGE_TAG
           EOF
-
-
-
-          767397934092.dkr.ecr.eu-central-1.amazonaws.com/cicd-repo:22eccf0-2024-08-07-15-44
