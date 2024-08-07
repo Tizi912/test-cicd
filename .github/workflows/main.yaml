@@ -71,7 +71,8 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           INSTANCE_IP=$(terraform output -raw instance_public_ip)
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@INSTANCE_IP << 'EOF'
+          chmod 400 ./terraform/test.pem
+          ssh -o StrictHostKeyChecking=no -i ./terraform/test.pem ec2-user@INSTANCE_IP << 'EOF'
           docker pull cicd-repo/my-app:latest
           docker run -d -p 80:8000 cicd-repo/my-app:latest
           EOF
